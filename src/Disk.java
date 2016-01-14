@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +44,14 @@ public class Disk implements Comparable<Disk> {
      *
      * @param filesize size of file to add to this disk
      */
-    public void add (int filesize) {
-        myFiles.add(filesize);
-        mySize += filesize;
+    public void add (int filesize) throws IOException {
+        if(myCapacity - mySize - filesize >= 0){
+        	myFiles.add(filesize);
+            mySize += filesize;
+        }
+        else{
+        	throw new IOException("no space, sorry");
+        }
     }
 
     /**
@@ -94,11 +100,7 @@ public class Disk implements Comparable<Disk> {
     public int compareTo (Disk other) {
         if (other != null) {
             int result = other.freeSpace() - freeSpace();
-            if (result == 0) {
-                return myId - other.myId;
-            } else {
-                return result;
-            }
+            return result; //CHANGE
         } else {
             return -1;
         }

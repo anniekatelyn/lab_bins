@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +27,24 @@ public class Bins {
         return results;
     }
 
+    public void printData(PriorityQueue pq){
+        System.out.println();
+        System.out.println("worst-fit method");
+        System.out.println("number of pq used: " + pq.size());
+        while (!pq.isEmpty()) {
+            System.out.println(pq.poll());
+        }
+        System.out.println();    	
+    }
+    
+    public void addtoPQ(){
+    	
+    }
     /**
      * The main program.
+     * @throws IOException 
      */
-    public static void main (String args[]) {
+    public static void main (String args[]) throws IOException {
         Bins b = new Bins();
         Scanner input = new Scanner(Bins.class.getClassLoader().getResourceAsStream(DATA_FILE));
         List<Integer> data = b.readData(input);
@@ -39,6 +54,7 @@ public class Bins {
 
         int diskId = 1;
         int total = 0;
+        
         for (Integer size : data) {
             Disk d = pq.peek();
             if (d.freeSpace() > size) {
@@ -55,13 +71,7 @@ public class Bins {
         }
 
         System.out.println("total size = " + total / 1000000.0 + "GB");
-        System.out.println();
-        System.out.println("worst-fit method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
+        b.printData(pq);
 
         Collections.sort(data, Collections.reverseOrder());
         pq.add(new Disk(0));
@@ -80,13 +90,7 @@ public class Bins {
                 pq.add(d2);
             }
         }
-
-        System.out.println();
-        System.out.println("worst-fit decreasing method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
+        
+        b.printData(pq);
     }
 }
